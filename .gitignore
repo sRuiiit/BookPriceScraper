@@ -1,0 +1,24 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+.venv/bin
+# Ignorer les fichiers spécifiques à PyCharm
+.idea/
+
+# Ignorer l'environnement virtuel
+.venv/
+
+# Exclure ces types de fichier dans GitHub
+*.csv
+*.json
+*.png
+*.jpg
+*.log
+output/
+
+# Ignorer les fichiers compilés Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignorer les fichiers système
+.DS_Store
+Thumbs.db
