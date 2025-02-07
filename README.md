@@ -34,7 +34,7 @@ Assurez-vous d’avoir Python 3.x installé. Vérifiez avec :
 
 Clonez ce repository et installez les modules nécessaires :
 
-<code>git clone https://github.com/votre-utilisateur/books-online-scraper.git
+<code>git clone https://github.com/sRuiiit/BookPriceScraper.git
 cd books-online-scraper
 pip install -r requirements.txt</code>
 
