@@ -7,7 +7,7 @@
 
 <h3>📝 Description du projet</h3>
 
-Ce projet vise à automatiser la surveillance des prix des livres d’occasion sur le site Books to Scrape afin d’aider Books Online, une librairie en ligne, à mieux suivre la concurrence.
+Ce projet vise à automatiser la surveillance des prix des livres d’occasion sur le site [Books to Scrape](https://books.toscrape.com) afin d’aider Books Online, une librairie en ligne, à mieux suivre la concurrence.
 
 Le programme est un scraper Python qui extrait les informations tarifaires et les enregistre sous forme exploitable pour des analyses ultérieures.
 
