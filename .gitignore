@@ -5,6 +5,7 @@
 
 # Ignorer l'environnement virtuel
 .venv/
+venv/
 
 # Exclure ces types de fichier dans GitHub
 *.csv
