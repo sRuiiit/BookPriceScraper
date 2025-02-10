@@ -44,7 +44,7 @@ Exécutez le script :
 
 <code>python scraper.py</code>
 
-Cela générera un fichier books_data.csv contenant les informations des livres extraits.
+Cela générera un dossier CSVparcategories contenant un fichier CSV par catégorie lui-même contenant les informations des livres extraits.
 
 <h4>📊 Format des données extraites</h4>
 
