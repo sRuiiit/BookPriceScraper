@@ -69,6 +69,7 @@ L’utilisation de cron jobs ou d’un scheduler Python permettrait d’automati
 <li>Automatiser le scraping à intervalles réguliers.</li>
 <li>Stocker les données dans une base SQL ou un tableau interactif.</li>
 <li>Intégrer une visualisation des tendances de prix.</li>
+<li>Utiliser la librairie LXML plus rapide et robuste.</li>
 
 <h4>👤 Auteur</h4>
 
