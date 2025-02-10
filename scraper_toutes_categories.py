@@ -3,8 +3,8 @@ import csv
 import lxml
 from bs4 import BeautifulSoup
 
-# URL de base pour les catégories (sans catégorie, sans numéro de page de catégorie)
-categories_base_url = "https://books.toscrape.com/catalogue/category/books/"
+# Lister TOUTES les catégories et leurs URLs indiquées sur la home
+url = "https://books.toscrape.com/"
 
 # Effectuer une requête GET pour récupérer la page
 response = requests.get(url)
@@ -22,6 +22,7 @@ if response.status_code == 200:
     categories = []
 
     # Extraire les noms et les URLs des catégories
+    print(f"{len(categories_section)} catégories trouvées, extraction en cours...")
     for category in categories_section:
         nom_categorie = category.get_text(strip=True)  # Récupère le nom de la catégorie
         url_categorie = "https://books.toscrape.com/" + category["href"]  # Construit l'URL complète
