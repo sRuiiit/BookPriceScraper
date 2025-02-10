@@ -1,104 +1,83 @@
 import requests
 import csv
-import lxml
+import os
 from bs4 import BeautifulSoup
 
-# Lister TOUTES les catégories et leurs URLs indiquées sur la home
-url = "https://books.toscrape.com/"
+# URL de la page d'accueil
+BASE_URL = "https://books.toscrape.com/"
 
-# Effectuer une requête GET pour récupérer la page
-response = requests.get(url)
-
-if response.status_code == 200:
-    print("C'est bon, j'ai le retour du site pour chopper les catégories !")
-
-    # Analyse du contenu HTML avec BeautifulSoup
-    soup = BeautifulSoup(response.content, "lxml")
-
-    # Sélectionner la liste des catégories
-    categories_section = soup.select("aside div.side_categories ul li ul li a")
-
-    # Liste pour stocker les catégories
-    categories = []
-
-    # Extraire les noms et les URLs des catégories
-    print(f"{len(categories_section)} catégories trouvées, extraction en cours...")
-    for category in categories_section:
-        nom_categorie = category.get_text(strip=True)  # Récupère le nom de la catégorie
-        url_categorie = "https://books.toscrape.com/" + category["href"]  # Construit l'URL complète
-
-        categories.append({"nom": nom_categorie, "url": url_categorie})
-
-    # Afficher les catégories trouvées
-    for cat in categories:
-        print(f"{cat['nom']} → {cat['url']}")
-
-else:
-    print("Erreur lors de la récupération de la page :", response.status_code)
+# Créer un dossier pour stocker les fichiers CSV
+CSV_FOLDER = "CSVparcategorie"
+os.makedirs(CSV_FOLDER, exist_ok=True)
 
 
-
-
-
-
-
-
-# ------ script précédent -------
-
-"""
-# URL de base pour la catégorie Nonfiction (sans numéro de page)
-base_url = "https://books.toscrape.com/catalogue/category/books/nonfiction_13/"
-
-# Liste pour stocker tous les livres
-livres = []
-
-# Numéro de page initial
-page = 1
-
-while True:  # Boucle infinie, on arrête quand il n'y a plus de page
-    url = f"{base_url}page-{page}.html" if page > 1 else f"{base_url}index.html"
-
-    # Effectuer une requête GET pour récupérer la page
+# Fonction pour récupérer la liste des catégories
+def get_categories():
+    url = BASE_URL + "index.html"
     response = requests.get(url)
 
-    # Vérifier si la page existe (évite les erreurs 404)
     if response.status_code != 200:
-        print(f"Fin du scraping, dernière page trouvée : {page - 1}")
-        break
+        print(f"Erreur lors de l'accès à la page d'accueil ({response.status_code})")
+        return {}
 
-    print(f"Scraping de la page {page}...")
-
-    # Analyse du contenu HTML avec BeautifulSoup
     soup = BeautifulSoup(response.content, "html.parser")
 
-    # Sélectionner tous les articles de livres sur la page
-    for livre in soup.find_all("article", class_="product_pod"):
-        titre = livre.h3.a["title"]  # Récupérer le titre du livre
-        prix = livre.find("p", class_="price_color").get_text()  # Prix du livre
-        disponibilite = livre.find("p", class_="instock availability").get_text(strip=True)  # Stock
+    categories_section = soup.select("aside div.side_categories ul li ul li a")
+    categories = {}
 
-        # Ajouter les informations dans la liste de livres
-        livres.append({
-            "titre": titre,
-            "prix": prix,
-            "disponibilite": disponibilite
-        })
+    for category in categories_section:
+        nom_categorie = category.get_text(strip=True)
+        url_categorie = os.path.join(BASE_URL, category["href"])
+        categories[nom_categorie] = url_categorie
 
-    # Passer à la page suivante
-    page += 1
+    print(f"{len(categories)} catégories trouvées")
+    return categories
 
-# Nom du fichier CSV
-nom_fichier = "livres_nonfiction.csv"
 
-# Création et écriture du fichier CSV
-with open(nom_fichier, mode="w", newline="", encoding="utf-8") as file:
-    writer = csv.DictWriter(file, fieldnames=["titre", "prix", "disponibilite"])
+# Fonction pour scraper tous les livres d'une catégorie
+def scrape_books(categorie, url):
+    print(f"Scraping de la catégorie : {categorie}")
+    livres = []
+    page = 1
 
-    # Écrire l'en-tête des colonnes
-    writer.writeheader()
+    while True:
+        page_url = url.replace("index.html", f"page-{page}.html") if page > 1 else url
+        response = requests.get(page_url)
 
-    # Écrire tous les livres récupérés dans le fichier CSV
-    writer.writerows(livres)
+        if response.status_code != 200:
+            print(f"Fin du scraping pour {categorie}, {len(livres)} livres trouvés")
+            break
 
-print(f"Le fichier {nom_fichier} a été créé avec succès, {len(livres)} livres trouvés !")
-"""
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        for livre in soup.find_all("article", class_="product_pod"):
+            titre = livre.h3.a["title"]
+            prix = livre.find("p", class_="price_color").get_text()
+            disponibilite = livre.find("p", class_="instock availability").get_text(strip=True)
+
+            livres.append({"titre": titre, "prix": prix, "disponibilite": disponibilite})
+
+        page += 1
+
+    return livres
+
+
+# Fonction pour sauvegarder les livres dans un fichier CSV
+def save_books_to_csv(categorie, livres):
+    nom_fichier = os.path.join(CSV_FOLDER, f"{categorie.replace(' ', '_').lower()}.csv")
+
+    with open(nom_fichier, mode="w") as file:
+        writer = csv.DictWriter(file, fieldnames=["titre", "prix", "disponibilite"])
+        writer.writeheader()
+        writer.writerows(livres)
+
+    print(f"Fichier '{nom_fichier}' créé avec {len(livres)} livres")
+
+
+# Exécution directe du script
+categories = get_categories()
+
+for categorie, url in categories.items():
+    livres = scrape_books(categorie, url)
+    if livres:
+        save_books_to_csv(categorie, livres)
