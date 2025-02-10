@@ -7,6 +7,9 @@
 .venv/
 venv/
 
+# Exclure le dossier CSVparcategorie
+CSVparcategorie/
+
 # Exclure ces types de fichier dans GitHub
 *.csv
 *.json
