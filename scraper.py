@@ -19,4 +19,4 @@ soup = BeautifulSoup(response.content, "html.parser")
 
 # Ou aller chercher le titre dans (body)
 titre_page_body = soup.find("h1").get_text()
-print("Titre de la page :", titre_page_body)s
+print("Titre de la page :", titre_page_body)
