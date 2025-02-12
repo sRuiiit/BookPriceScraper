@@ -10,6 +10,12 @@ venv/
 # Exclure le dossier CSVparcategorie
 CSVparcategorie/
 
+# Dossier contenant les anciennes versions
+old_versions/
+
+# Dossier contenant les images de couverture
+images_couvertures/
+
 # Exclure ces types de fichier dans GitHub
 *.csv
 *.json
