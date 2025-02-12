@@ -13,8 +13,8 @@ Le programme est un scraper Python qui extrait les informations tarifaires et le
 
 <h4>🎯 Objectifs</h4>
 <li>Automatiser la collecte des prix des livres sur Books to Scrape.</li>
-<li>Structurer les données extraites sous un format exploitable (CSV/JSON).</li>
-<li>Préparer le terrain pour un futur pipeline ETL.</li>
+<li>Structurer les données extraites sous un format exploitable (CSV) par catégorie.</li>
+<li>Récupérer les images de couverture de chaque livre et classer par catégorie.</li>
 
 <h4>📂 Contenu du repository</h4>
 <li>scraper.py → Script principal qui extrait les données.</li>
