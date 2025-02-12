@@ -62,13 +62,27 @@ def telecharger_image(url, chemin_fichier):
         return False
 
 
+def get_detail_image_url(detail_url):
+    """Récupère l'URL de l'image haute résolution depuis la page de détail"""
+    try:
+        response = requests.get(detail_url)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.content, "html.parser")
+            image_div = soup.find("div", class_="item active")
+            if image_div and image_div.img:
+                image_relative = image_div.img["src"]
+                return urljoin(BASE_URL, image_relative.replace("../../", ""))
+    except Exception as e:
+        print(f"Erreur lors de la récupération de l'image HD: {e}")
+    return None
+
+
 # Fonction pour scraper tous les livres d'une catégorie
 def scrape_books(categorie, url):
     print(f"Scraping de la catégorie : {categorie}")
     livres = []
     page = 1
     
-    # Créer le dossier pour cette catégorie
     categorie_folder = os.path.join(IMAGES_FOLDER, categorie.replace(' ', '_').lower())
     os.makedirs(categorie_folder, exist_ok=True)
 
@@ -87,24 +101,28 @@ def scrape_books(categorie, url):
             prix = livre.find("p", class_="price_color").get_text()
             disponibilite = livre.find("p", class_="instock availability").get_text(strip=True)
             
-            # Récupération de l'URL de l'image
-            image_relative = livre.find("img")["src"]
-            image_url = urljoin(BASE_URL, image_relative)
+            # Récupération de l'URL de la page détail
+            detail_relative_url = livre.h3.a["href"]
+            detail_url = urljoin(url, detail_relative_url)
             
-            # Création du nom de fichier pour l'image
-            nom_fichier = f"{nettoyer_nom_fichier(titre)}.jpg"
-            chemin_image = os.path.join(categorie_folder, nom_fichier)
+            # Récupération de l'image HD depuis la page détail
+            image_url = get_detail_image_url(detail_url)
             
-            # Téléchargement de l'image
-            succes_telechargement = telecharger_image(image_url, chemin_image)
-            
-            livres.append({
-                "titre": titre, 
-                "prix": prix, 
-                "disponibilite": disponibilite,
-                "image_url": image_url,
-                "image_locale": chemin_image if succes_telechargement else "non_telecharge"
-            })
+            if image_url:
+                # Création du nom de fichier pour l'image
+                nom_fichier = f"{nettoyer_nom_fichier(titre)}.jpg"
+                chemin_image = os.path.join(categorie_folder, nom_fichier)
+                
+                # Téléchargement de l'image HD
+                succes_telechargement = telecharger_image(image_url, chemin_image)
+                
+                livres.append({
+                    "titre": titre, 
+                    "prix": prix, 
+                    "disponibilite": disponibilite,
+                    "image_url": image_url,
+                    "image_locale": chemin_image if succes_telechargement else "non_telecharge"
+                })
 
         page += 1
 
