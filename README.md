@@ -50,10 +50,11 @@ Cela générera un dossier CSVparcategories contenant un fichier CSV par catégo
 
 Les données sont enregistrées sous forme de fichier CSV avec les colonnes suivantes :
 
-| Titre    | Prix   | Disponibilité |
-|----------|--------|--------------|
-| Book 1   | 45.99€ | En stock     |
-| Book 2   | 12.50€ | En stock     |
+
+| titre   | prix   | disponibilite | image_url   | image_locale                  |
+|---------|--------|---------------|-------------|-------------------------------|
+| Livre 1 | £45.17 | in stock      | https://... | images_couvertures/travel/... |
+| Livre 2 | £49.43 | in stock      | https://... | images_couvertures/cat.../... |
 
 <h4>🔧 Vers un pipeline ETL</h4>
 
