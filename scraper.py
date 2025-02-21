@@ -101,7 +101,7 @@ def scrape_books(categorie, url):
             titre = livre.h3.a["title"]
             prix = livre.find("p", class_="price_color").get_text()
             disponibilite = livre.find("p", class_="instock availability").get_text(strip=True)
-            rating = livre.find("p", class_="star-rating")["class"][1]
+            # rating = livre.find("p", class_="star-rating")["class"][1] <-- au cas ou il faudrait l'ajouter par la suite
             
             # Récupération de l'URL de la page détail
             detail_relative_url = livre.h3.a["href"]
@@ -122,7 +122,7 @@ def scrape_books(categorie, url):
                     "titre": titre, 
                     "prix": prix, 
                     "disponibilite": disponibilite,
-                    "rating": rating,
+                    # "rating": rating, <- au cas ou il faudrait l'ajouter au .csv
                     "image_url": image_url,
                     "image_locale": chemin_image if succes_telechargement else "non_telecharge"
                 })
@@ -137,7 +137,7 @@ def save_books_to_csv(categorie, livres, fichier=None):
     nom_fichier = os.path.join(CSV_FOLDER, f"{categorie.replace(' ', '_').lower()}.csv")
 
     with open(nom_fichier, mode="w", newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=["titre", "prix", "disponibilite", "rating", "image_url", "image_locale"])
+        writer = csv.DictWriter(file, fieldnames=["titre", "prix", "disponibilite", "image_url", "image_locale"]) # Colonnes "rating", à ajouter si besoin
         writer.writeheader()
         writer.writerows(livres)
 
