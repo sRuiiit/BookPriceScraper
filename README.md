@@ -34,9 +34,20 @@ Assurez-vous d’avoir Python 3.x installé. Vérifiez avec :
 
 Clonez ce repository et installez les modules nécessaires :
 
-<code>git clone https://github.com/sRuiiit/BookPriceScraper.git
-cd books-online-scraper
-pip install -r requirements.txt</code>
+<code>
+git clone https://github.com/sRuiiit/BookPriceScraper.git
+cd BookPriceScraper
+pip install -r requirements.txt
+</code>
+
+Si vous utilisez un environement virtuerl : 
+
+<code>
+python -m venv env
+source env/bin/activate  # Sur macOS/Linux
+env\Scripts\activate     # Sur Windows
+pip install -r requirements.txt
+</code>
 
 3. Lancer le scraper
 
