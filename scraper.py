@@ -51,6 +51,7 @@ def nettoyer_nom_fichier(titre):
 def telecharger_image(url, chemin_fichier):
     """Télécharge une image depuis son URL"""
     try:
+        print(f"Téléchargement de l'image : {url}")  # Ajout du print
         response = requests.get(url)
         if response.status_code == 200:
             with open(chemin_fichier, 'wb') as f:
