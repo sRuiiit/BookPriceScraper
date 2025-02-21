@@ -12,7 +12,7 @@ BASE_URL = "https://books.toscrape.com/"
 CSV_FOLDER = "CSVparcategorie"
 os.makedirs(CSV_FOLDER, exist_ok=True)
 
-# Ajouter ces constantes après les existantes
+# Dossier pour stocker les images des couvertures de livres
 IMAGES_FOLDER = "images_couvertures"
 os.makedirs(IMAGES_FOLDER, exist_ok=True)
 
