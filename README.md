@@ -1,7 +1,7 @@
 <h1> 📚 Books Online - Scraper de Prix </h1>
 
 <h2>Automatisation du suivi des prix des livres d’occasion</h2>
-<h3>Un projet Python pour extraire les prix des livres de Books to Scrape</h3>
+<h3>Un projet Python pour extraire les prix des livres de Books to Scrape et télécharger l'intégralité des images de couvertures.</h3>
 
 <br>
 
